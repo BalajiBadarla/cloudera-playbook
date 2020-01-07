@@ -12,7 +12,8 @@ mysql_innodb_buffer_pool_size: 4G
 mysql_root_password: changeme
 
 # Supported database types: mysql,postgresql,...
-database_type: mysql
+#database_type: mysql
+database_type: postgresql
 
 databases:
   scm:
