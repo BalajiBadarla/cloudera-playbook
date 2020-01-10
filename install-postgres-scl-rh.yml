@@ -43,9 +43,9 @@
 #      postgresql_version: 9.6
 #      postgresql_scl_version: 96
       postgresql_use_scl: true
-      postgresql_data_dir: /var/opt/rh/rh-postgresql96/lib/pgsql/data
-      postgresql_bin_path: /opt/rh/rh-postgresql96/root/usr/bin
-      postgresql_config_path: /var/opt/rh/rh-postgresql96/lib/pgsql/data
+      postgresql_data_dir: /var/opt/rh/rh-postgresql{{ postgresql_scl_version }}/lib/pgsql/data
+      postgresql_bin_path: /opt/rh/rh-postgresql{{ postgresql_scl_version }}/root/usr/bin
+      postgresql_config_path: /var/opt/rh/rh-postgresql{{ postgresql_scl_version }}/lib/pgsql/data
       postgresql_global_config_options:
         - option: listen_addresses
           value: "*"
@@ -56,11 +56,11 @@
       postgresql_packages:
       # - rh-postgresql96-postgresql-syspaths
       # - rh-postgresql96-postgresql-server-syspaths
-        - rh-postgresql96-postgresql
-        - rh-postgresql96-postgresql-server
-        - rh-postgresql96-postgresql-contrib-syspaths
-        - rh-postgresql96-postgresql-libs
-      postgresql_daemon: rh-postgresql96-postgresql
+        - rh-postgresql{{ postgresql_scl_version }}-postgresql
+        - rh-postgresql{{ postgresql_scl_version }}-postgresql-server
+        - rh-postgresql{{ postgresql_scl_version }}-postgresql-contrib-syspaths
+        - rh-postgresql{{ postgresql_scl_version }}-postgresql-libs
+      postgresql_daemon: rh-postgresql{{ postgresql_scl_version }}-postgresql
 
 
   tasks:
