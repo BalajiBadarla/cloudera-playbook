@@ -1,5 +1,6 @@
 # from GitHub, overriding the name and specifying a specific tag
 #- src: https://galaxy.ansible.com/geerlingguy/postgresql/
-- src: geerlingguy.postgresql
-  version: master
-  name: ansible-role-postgresql
+#- src: geerlingguy.postgresql
+#- src: https://github.com/geerlingguy/ansible-role-postgresql
+#  version: master
+#  name: ansible-role-postgresql

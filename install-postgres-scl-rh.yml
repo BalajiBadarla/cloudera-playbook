@@ -8,6 +8,10 @@
   gather_facts: true
   become: yes
   vars:
+    postgresql_version: 9.6
+    postgresql_scl_version: 96
+    postgresql_use_scl: true
+    postgresql_lib_dir: /opt/rh/rh-postgresql96/root/usr/lib64
     postgresql_hba_entries_default:
       - { type: local, database: all, user: postgres, auth_method: peer }
       - { type: local, database: all, user: all, auth_method: peer }
@@ -50,3 +54,14 @@
         - rh-postgresql96-postgresql-contrib-syspaths
         - rh-postgresql96-postgresql-libs
       postgresql_daemon: rh-postgresql96-postgresql
+
+
+  tasks:
+    - file:
+        src: "{{ postgresql_lib_dir }}/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
+        dest: "{{ item }}/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
+        state: link
+      loop:
+        - /usr/lib64
+        - /usr/lib
+      when: ansible_distribution == 'CentOS' 
