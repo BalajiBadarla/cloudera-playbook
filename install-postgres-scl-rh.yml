@@ -28,7 +28,7 @@
       when: ansible_distribution == 'CentOS'
 
     - name: check variables are set
-      debug:
+      fail:
         msg: Variable {{ item }} is not set
       when: "{{ item }} is not defined"
       loop:
