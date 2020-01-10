@@ -8,10 +8,9 @@
   gather_facts: true
   become: yes
   vars:
-    postgresql_version: 9.6
-    postgresql_scl_version: 96
+#    postgresql_version: 9.6
+#    postgresql_scl_version: 96
     postgresql_use_scl: true
-    postgresql_lib_dir: /opt/rh/rh-postgresql96/root/usr/lib64
     postgresql_hba_entries_default:
       - { type: local, database: all, user: postgres, auth_method: peer }
       - { type: local, database: all, user: all, auth_method: peer }
@@ -28,13 +27,21 @@
         state: present
       when: ansible_distribution == 'CentOS'
 
+    - name: check variables are set
+      debug:
+        msg: Variable {{ item }} is not set
+      when: "{{ item }} is not defined"
+      loop:
+        - postgresql_version
+        - postgresql_scl_version
+
   roles:
     # Note: This requires the role contains the feature from PR: https://github.com/geerlingguy/ansible-role-postgresql/pull/96
     - name: ansible-role-postgresql
       # Note: It also works without explicilty enabling the repo
       #postgresql_enablerepo: "centos-sclo-rh"
-      postgresql_version: 9.6
-      postgresql_scl_version: 96
+#      postgresql_version: 9.6
+#      postgresql_scl_version: 96
       postgresql_use_scl: true
       postgresql_data_dir: /var/opt/rh/rh-postgresql96/lib/pgsql/data
       postgresql_bin_path: /opt/rh/rh-postgresql96/root/usr/bin
@@ -58,7 +65,7 @@
 
   tasks:
     - file:
-        src: "{{ postgresql_lib_dir }}/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
+        src: "/opt/rh/rh-postgresql{{ postgresql_scl_version }}/root/usr/lib64/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
         dest: "{{ item }}/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
         state: link
       loop:
