@@ -49,3 +49,6 @@
           value: "*"
         - option: max_connections
           value: "500"
+
+    - role: database/postgres
+     

@@ -1,0 +1,4 @@
+---
+
+- name: Include postgres-el9-fix.yml
+  include: "postgres-el9-fix.yml"

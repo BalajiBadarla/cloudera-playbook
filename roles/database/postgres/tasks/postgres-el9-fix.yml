@@ -1,0 +1,6 @@
+---
+
+- name: Install Postgres postgresql10-libs package to fix psycopg2 in postgres 9.x
+  yum:
+    name: postgresql10-libs
+    state: installed
