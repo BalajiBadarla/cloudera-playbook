@@ -10,6 +10,8 @@
   vars:
 #    postgresql_version: 9.6
 #    postgresql_scl_version: 96
+    postgresql_version: 10.5
+    postgresql_scl_version: 10
     postgresql_use_scl: true
     postgresql_hba_entries_default:
       - { type: local, database: all, user: postgres, auth_method: peer }
@@ -19,21 +21,37 @@
     postgresql_hba_allow_all_ips_on_all_dbs: 
       - {type: host, database: all, user: all, address: "0.0.0.0/0", auth_method: md5}
 
+  vars_prompt:
+    - name: "postgresql_version"
+      prompt: "Enter postgresql_version if not default"
+      default: "10.5"
+      private: no
+
+    - name: "postgresql_scl_version"
+      prompt: "Enter postgresql_scl_version if not default"
+      default: "10"
+      private: no
+
   pre_tasks:
+
+    - name: check postgresql_version variable is set
+      fail:
+        msg: Variable {{ postgresql_version }} is not set
+      when: postgresql_version is not defined
+
+    - name: check postgresql_scl_version variable is set
+      fail:
+        msg: Variable {{ postgresql_scl_version }} is not set
+      when: postgresql_scl_version is not defined
+
     # More infos on the "rh-postgresql96" SCL: https://www.softwarecollections.org/en/scls/rhscl/rh-postgresql96/
+    # More infos on the "rh-postgresql10" SCL: https://www.softwarecollections.org/en/scls/rhscl/rh-postgresql10/
+
     - name: Enable RH SCL (Software Collections) on CentOS
       yum:
         name: centos-release-scl-rh
         state: present
       when: ansible_distribution == 'CentOS'
-
-    - name: check variables are set
-      fail:
-        msg: Variable {{ item }} is not set
-      when: "{{ item }} is not defined"
-      loop:
-        - postgresql_version
-        - postgresql_scl_version
 
   roles:
     # Note: This requires the role contains the feature from PR: https://github.com/geerlingguy/ansible-role-postgresql/pull/96
@@ -62,7 +80,7 @@
         - rh-postgresql{{ postgresql_scl_version }}-postgresql-libs
       postgresql_daemon: rh-postgresql{{ postgresql_scl_version }}-postgresql
 
-
+# this is required for 9.6
   tasks:
     - file:
         src: "/opt/rh/rh-postgresql{{ postgresql_scl_version }}/root/usr/lib64/libpq.so.rh-postgresql{{ postgresql_scl_version }}-5"
@@ -71,4 +89,4 @@
       loop:
         - /usr/lib64
         - /usr/lib
-      when: ansible_distribution == 'CentOS' 
+      when: ansible_distribution == 'CentOS'
