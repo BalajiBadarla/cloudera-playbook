@@ -1,0 +1,10 @@
+## Playbook to install postgresql 9.6 from the offical postgres (pgdg) repo using `ANXS.postgresql` role
+# The role is expected to be in a configured role path (usually added via git submodule)
+# Note: can this run under selinux - tbc
+- hosts: all
+  gather_facts: true
+  become: yes
+
+  roles:
+    - name: ANXS.postgresql
+      postgresql_version: 10
